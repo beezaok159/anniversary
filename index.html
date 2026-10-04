@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 2 Months Anniversary 💖 พี่พลอย</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffeef2 0%, #fed7e2 50%, #fbcfe8 100%);
+      font-family: 'Mali', 'Itim', cursive, sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 20px 10px;
+    }
+
+    /* Floating background hearts */
+    .bg-elements {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .heart-particle {
+      position: absolute;
+      color: rgba(244, 114, 182, 0.4);
+      user-select: none;
+      animation: floatUp 8s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(105vh) scale(0.6) rotate(0deg);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      80% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.1) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Music Player Button */
+    .music-btn {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 99;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 2px solid #f472b6;
+      border-radius: 50px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(244, 114, 182, 0.3);
+      font-family: 'Mali', cursive;
+      font-size: 14px;
+      color: #be185d;
+      font-weight: 600;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .music-btn:hover {
+      transform: scale(1.05);
+      background: #fff;
+    }
+
+    .disc-icon {
+      font-size: 18px;
+      display: inline-block;
+      animation: spin 3s linear infinite paused;
+    }
+
+    .music-btn.playing .disc-icon {
+      animation-play-state: running;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Container */
+    .scene-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 580px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      perspective: 1200px;
+    }
+
+    /* Envelope Stage */
+    .envelope-box {
+      position: relative;
+      width: 320px;
+      height: 220px;
+      cursor: pointer;
+      transition: transform 0.4s ease, opacity 0.5s ease;
+    }
+
+    @media (min-width: 480px) {
+      .envelope-box {
+        width: 380px;
+        height: 250px;
+      }
+    }
+
+    .envelope-box:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+
+    .envelope-base {
+      position: absolute;
+      inset: 0;
+      background: #f472b6;
+      border-radius: 14px;
+      box-shadow: 0 15px 35px rgba(190, 24, 93, 0.25);
+      overflow: hidden;
+    }
+
+    /* Envelope flaps using CSS shapes */
+    .pocket-left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 110px 0 0 160px;
+      border-color: transparent transparent transparent #f9a8d4;
+      z-index: 3;
+    }
+
+    .pocket-right {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 110px 160px 0 0;
+      border-color: transparent #f9a8d4 transparent transparent;
+      z-index: 3;
+    }
+
+    @media (min-width: 480px) {
+      .pocket-left { border-width: 125px 0 0 190px; }
+      .pocket-right { border-width: 125px 190px 0 0; }
+    }
+
+    .pocket-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 160px 120px 160px;
+      border-color: transparent transparent #f472b6 transparent;
+      z-index: 4;
+    }
+
+    @media (min-width: 480px) {
+      .pocket-bottom {
+        border-width: 0 190px 140px 190px;
+      }
+    }
+
+    .envelope-top-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 130px 160px 0 160px;
+      border-color: #ec4899 transparent transparent transparent;
+      transform-origin: top center;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 5;
+    }
+
+    @media (min-width: 480px) {
+      .envelope-top-flap {
+        border-width: 145px 190px 0 190px;
+      }
+    }
+
+    /* Wax Seal Heart Stamp */
+    .wax-seal {
+      position: absolute;
+      top: 110px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 58px;
+      height: 58px;
+      background: radial-gradient(circle, #e11d48 40%, #9f1239 100%);
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      color: #fff;
+      z-index: 6;
+      transition: transform 0.3s ease;
+      animation: heartbeat 1.6s infinite ease-in-out;
+    }
+
+    @media (min-width: 480px) {
+      .wax-seal { top: 125px; }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.12); }
+    }
+
+    .envelope-instruction {
+      margin-top: 24px;
+      font-size: 18px;
+      color: #9d174d;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 8px 22px;
+      border-radius: 30px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 12px rgba(244, 114, 182, 0.25);
+      animation: bounce 2s infinite;
+      text-align: center;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
+    }
+
+    /* State when opened */
+    .envelope-box.open .envelope-top-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-box.open .wax-seal {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Letter Document */
+    .letter-card {
+      position: absolute;
+      top: 0;
+      width: 95%;
+      max-width: 500px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 35px 28px 30px;
+      box-shadow: 0 20px 50px rgba(157, 23, 77, 0.22);
+      border: 2px solid #fce7f3;
+      opacity: 0;
+      transform: translateY(60px) scale(0.9);
+      pointer-events: none;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 20;
+    }
+
+    .letter-card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+      position: relative;
+    }
+
+    /* Letter styling */
+    .letter-header {
+      text-align: center;
+      border-bottom: 2px dashed #fbcfe8;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .letter-badge {
+      display: inline-block;
+      background: #fdf2f8;
+      color: #db2777;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      border: 1px solid #fbcfe8;
+    }
+
+    .letter-title {
+      font-size: 22px;
+      color: #9d174d;
+      font-weight: 700;
+    }
+
+    .letter-date {
+      font-size: 14px;
+      color: #f472b6;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .letter-body {
+      font-size: 16px;
+      line-height: 1.85;
+      color: #374151;
+      text-align: left;
+    }
+
+    .letter-body p {
+      margin-bottom: 15px;
+      text-indent: 1.5em;
+    }
+
+    .letter-body p:first-of-type {
+      text-indent: 0;
+    }
+
+    .highlight-apology {
+      color: #831843;
+      background: #fff1f2;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border-left: 4px solid #f43f5e;
+      text-indent: 0 !important;
+      margin: 16px 0;
+    }
+
+    .highlight-promise {
+      color: #831843;
+      background: #fdf2f8;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border-left: 4px solid #ec4899;
+      text-indent: 0 !important;
+      margin: 16px 0;
+    }
+
+    .letter-footer {
+      margin-top: 24px;
+      text-align: center;
+      border-top: 2px dashed #fbcfe8;
+      padding-top: 18px;
+    }
+
+    .love-signature {
+      font-size: 18px;
+      color: #be185d;
+      font-weight: 700;
+    }
+
+    /* Interactive Hug Button */
+    .hug-section {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-hug {
+      background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'Mali', cursive;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(190, 24, 93, 0.35);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-hug:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 24px rgba(190, 24, 93, 0.45);
+    }
+
+    .btn-hug:active {
+      transform: scale(0.96);
+    }
+
+    .hug-count-text {
+      font-size: 14px;
+      color: #be185d;
+      font-weight: 600;
+    }
+
+    /* Reply Section */
+    .reply-section {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 2px dashed #fbcfe8;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .reply-title {
+      font-size: 16px;
+      color: #9d174d;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reply-textarea {
+      width: 100%;
+      border: 2px solid #fbcfe8;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-family: 'Mali', cursive;
+      font-size: 15px;
+      color: #374151;
+      resize: none;
+      outline: none;
+      background: #fffafa;
+      transition: all 0.25s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .reply-textarea:focus {
+      border-color: #ec4899;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    }
+
+    .reply-textarea::placeholder {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .btn-reply {
+      background: linear-gradient(135deg, #f43f5e 0%, #be185d 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 11px 26px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Mali', cursive;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(190, 24, 93, 0.3);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-reply:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 20px rgba(190, 24, 93, 0.4);
+    }
+
+    .btn-reply:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .reply-status {
+      font-size: 14px;
+      font-weight: 600;
+      min-height: 22px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .reply-status.success {
+      color: #059669;
+    }
+
+    .reply-status.error {
+      color: #dc2626;
+    }
+
+    /* Lock Screen & Countdown */
+    .lock-container {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 2px solid #fce7f3;
+      border-radius: 24px;
+      padding: 35px 24px 28px;
+      text-align: center;
+      box-shadow: 0 20px 45px rgba(190, 24, 93, 0.2);
+      max-width: 440px;
+      width: 95%;
+      margin: 0 auto;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .lock-icon {
+      font-size: 54px;
+      display: inline-block;
+      margin-bottom: 12px;
+      cursor: pointer;
+      animation: floatLock 3s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes floatLock {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .lock-title {
+      font-size: 22px;
+      color: #9d174d;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .lock-desc {
+      font-size: 15px;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .count-box {
+      background: #fff5f8;
+      border: 1.5px solid #fbcfe8;
+      border-radius: 14px;
+      padding: 12px 4px;
+      box-shadow: 0 4px 10px rgba(244, 114, 182, 0.12);
+    }
+
+    .count-number {
+      font-size: 26px;
+      font-weight: 700;
+      color: #be185d;
+      line-height: 1.1;
+    }
+
+    .count-label {
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .lock-notice {
+      font-size: 14px;
+      color: #db2777;
+      font-weight: 600;
+    }
+
+    .preview-hint {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #cbd5e1;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .preview-hint:hover {
+      color: #94a3b8;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Confetti hearts on click */
+    .sparkle-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 100;
+      animation: flyAway 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      font-size: 24px;
+    }
+
+    @keyframes flyAway {
+      0% {
+        transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.4) rotate(var(--rot));
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Elements -->
+  <div class="bg-elements" id="bgElements"></div>
+
+  <!-- Audio Element (Put your music.mp3 in the same folder!) -->
+  <audio id="bgMusic" src="music.mp3" loop preload="auto"></audio>
+
+  <!-- Floating Music Toggle -->
+  <button class="music-btn" id="musicBtn" title="กดเปิด/ปิดเสียงเพลง">
+    <span class="disc-icon">🎵</span>
+    <span id="musicText">เปิดเพลง</span>
+  </button>
+
+  <div class="scene-container">
+    
+    <!-- 0. Lock Screen & Countdown (Unlocks 13/10/2026) -->
+    <div class="lock-container" id="lockContainer" style="display: none;">
+      <div class="lock-icon" id="lockIcon" title="แตะเพื่อดูเอฟเฟกต์">🔒</div>
+      <h2 class="lock-title">ยังเปิดไม่ได้น้าา 🤍</h2>
+      <p class="lock-desc">ซองนี้ไว้เปิดวันที่ 13/10/69 นะเธอ</p>
+
+      <div class="countdown-grid">
+        <div class="count-box">
+          <div class="count-number" id="cdDays">00</div>
+          <div class="count-label">วัน</div>
+        </div>
+        <div class="count-box">
+          <div class="count-number" id="cdHours">00</div>
+          <div class="count-label">ชั่วโมง</div>
+        </div>
+        <div class="count-box">
+          <div class="count-number" id="cdMinutes">00</div>
+          <div class="count-label">นาที</div>
+        </div>
+        <div class="count-box">
+          <div class="count-number" id="cdSeconds">00</div>
+          <div class="count-label">วินาที</div>
+        </div>
+      </div>
+
+      <div class="lock-notice">
+        ⏰ รอเปิดพร้อมกันวันที่ 13 ตุลาคม 2569 นะครับ 🧸✨
+      </div>
+    </div>
+
+    <!-- 1. The Interactive Envelope -->
+    <div class="envelope-box" id="envelopeBox">
+      <div class="envelope-base"></div>
+      <div class="pocket-left"></div>
+      <div class="pocket-right"></div>
+      <div class="pocket-bottom"></div>
+      <div class="envelope-top-flap"></div>
+      <div class="wax-seal">💌</div>
+    </div>
+    
+    <div class="envelope-instruction" id="envInstruction">
+      แตะที่ซองจดหมายเพื่อเปิดอ่านนะ 🤍
+    </div>
+
+    <!-- 2. The Letter Inside -->
+    <div class="letter-card" id="letterCard">
+      <div class="letter-header">
+        <div class="letter-badge">2 Months Milestone 🪐</div>
+        <h1 class="letter-title">Happy 2 months anniversary</h1>
+        <div class="letter-date">ถึง: พี่พลอย 🤍 (13/10)</div>
+      </div>
+
+      <div class="letter-body">
+        <p><strong>แป๊บๆ ครบ 2 เดือนแล้วเนอะพี่พลอย</strong> (13/10) 🤍</p>
+        
+        <div class="highlight-apology">
+          เค้าอยากขอโทษพี่มากๆ เลยนะ ที่ช่วงที่ผ่านมาเค้าทำตัวไม่ค่อยน่ารัก หรือเอาเรื่องเหนื่อยๆ เรื่องแย่ๆ ไปให้พี่ต้องปวดหัวด้วย ทั้งที่ใจจริงเค้าอยากให้พี่อยู่กับเค้าแล้วแฮปปี้ที่สุดแท้ๆ
+        </div>
+
+        <p>
+          ขอบคุณพี่พลอยมากๆ นะที่ยังใจเย็น ยังอดทน แล้วก็ไม่ยอมปล่อยมือเค้าไปไหน
+        </p>
+
+        <div class="highlight-promise">
+          เค้าสัญญาว่าจะพยายามปรับตัวให้ดีขึ้น จะไม่ทำให้พี่ต้องเหนื่อยใจบ่อยๆ อีกแล้ว ✨
+        </div>
+
+        <p style="text-align: center; font-weight: 600; color: #db2777; margin-top: 15px;">
+          อยู่บ่น อยู่ให้เค้ากอดแบบนี้ไปนานๆ นะ
+        </p>
+      </div>
+
+      <div class="letter-footer">
+        <div class="love-signature">รักพี่พลอยนะครับ 🤍🧸</div>
+      </div>
+
+      <!-- Hug Interactive Section -->
+      <div class="hug-section">
+        <button class="btn-hug" id="btnHug">
+          <span>ส่งกอดกลับให้เค้า 🫂</span>
+        </button>
+        <div class="hug-count-text" id="hugCountText">ส่งกอดกลับมาแล้ว 0 ครั้ง 💖</div>
+      </div>
+
+      <!-- Reply Section -->
+      <div class="reply-section">
+        <div class="reply-title">
+          <span>💌 พี่อยากมีอะไรบอกกับเด็กคนนี้ไหม...</span>
+        </div>
+        <textarea 
+          id="replyInput" 
+          class="reply-textarea" 
+          rows="3" 
+          placeholder="พิมพ์ข้อความตอบกลับเค้าตรงนี้ได้เลยนะ..."
+        ></textarea>
+        <button id="btnSendReply" class="btn-reply">
+          <span>ส่งคำตอบกลับให้เค้า 🚀</span>
+        </button>
+        <div id="replyStatus" class="reply-status"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Create random background hearts
+    const bgContainer = document.getElementById('bgElements');
+    const hearts = ['🤍', '💖', '🌸', '✨', '🌷', '🪐', '🧸'];
+    
+    for (let i = 0; i < 22; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart-particle';
+      heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (Math.random() * 16 + 14) + 'px';
+      heart.style.animationDelay = (Math.random() * 8) + 's';
+      heart.style.animationDuration = (Math.random() * 6 + 6) + 's';
+      bgContainer.appendChild(heart);
+    }
+
+    const envelopeBox = document.getElementById('envelopeBox');
+    const envInstruction = document.getElementById('envInstruction');
+    const letterCard = document.getElementById('letterCard');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicText = document.getElementById('musicText');
+
+    let isOpen = false;
+    let isPlaying = false;
+
+    // Countdown Lock Feature (Target: 13/10/2569 or 13 Oct 2026 00:00:00 GMT+7)
+    const TARGET_DATE = new Date('2026-10-13T00:00:00+07:00').getTime();
+    const lockContainer = document.getElementById('lockContainer');
+    const lockIcon = document.getElementById('lockIcon');
+    const cdDays = document.getElementById('cdDays');
+    const cdHours = document.getElementById('cdHours');
+    const cdMinutes = document.getElementById('cdMinutes');
+    const cdSeconds = document.getElementById('cdSeconds');
+
+    sessionStorage.removeItem('annivPreviewUnlocked');
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPreviewUnlocked = urlParams.get('preview') === 'true';
+
+    function checkLockStatus() {
+      const now = new Date().getTime();
+      const distance = TARGET_DATE - now;
+
+      if (distance <= 0 || isPreviewUnlocked) {
+        // UNLOCKED!
+        lockContainer.style.display = 'none';
+        if (!isOpen) {
+          envelopeBox.style.display = 'block';
+          envInstruction.style.display = 'block';
+        }
+      } else {
+        // LOCKED!
+        lockContainer.style.display = 'block';
+        envelopeBox.style.display = 'none';
+        envInstruction.style.display = 'none';
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        cdDays.innerText = String(days).padStart(2, '0');
+        cdHours.innerText = String(hours).padStart(2, '0');
+        cdMinutes.innerText = String(minutes).padStart(2, '0');
+        cdSeconds.innerText = String(seconds).padStart(2, '0');
+      }
+    }
+
+    checkLockStatus();
+    setInterval(checkLockStatus, 1000);
+
+    // Envelope Click Event
+    envelopeBox.addEventListener('click', (e) => {
+      if (isOpen) return;
+      isOpen = true;
+
+      // Pop hearts animation
+      burstHearts(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, 25);
+
+      // Open envelope animation
+      envelopeBox.classList.add('open');
+      envInstruction.style.display = 'none';
+
+      // Start music automatically on click
+      playMusic();
+
+      // Show letter card
+      setTimeout(() => {
+        envelopeBox.style.display = 'none';
+        letterCard.classList.add('visible');
+        burstHearts(window.innerWidth / 2, window.innerHeight / 2, 35);
+      }, 700);
+    });
+
+    // Music Control
+    function playMusic() {
+      bgMusic.play().then(() => {
+        isPlaying = true;
+        musicBtn.classList.add('playing');
+        musicText.innerText = "กำลังเล่นเพลง";
+      }).catch((err) => {
+        console.log("Music play prevented or file not found yet:", err);
+      });
+    }
+
+    function pauseMusic() {
+      bgMusic.pause();
+      isPlaying = false;
+      musicBtn.classList.remove('playing');
+      musicText.innerText = "เล่นเพลง";
+    }
+
+    musicBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        pauseMusic();
+      } else {
+        playMusic();
+      }
+    });
+
+    // Hug Counter Feature
+    const btnHug = document.getElementById('btnHug');
+    const hugCountText = document.getElementById('hugCountText');
+    let hugCount = 0;
+
+    btnHug.addEventListener('click', (e) => {
+      hugCount++;
+      hugCountText.innerText = `ส่งกอดกลับมาแล้ว ${hugCount} ครั้ง 💖`;
+      
+      const rect = btnHug.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      burstHearts(x, y, 12);
+    });
+
+    // Discord Webhook Integration
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1556351266790178907/9D36zGfbNpAwxPHTUZMjWse69b_ci1noZkLqeXU9ay6KuzRHRTCcVJqwz3mcpOXdkwWl";
+    const replyInput = document.getElementById('replyInput');
+    const btnSendReply = document.getElementById('btnSendReply');
+    const replyStatus = document.getElementById('replyStatus');
+
+    btnSendReply.addEventListener('click', async () => {
+      const message = replyInput.value.trim();
+      if (!message) {
+        replyStatus.className = 'reply-status error';
+        replyStatus.innerText = 'พิมพ์ข้อความก่อนน้าคนดี 🥺';
+        replyInput.focus();
+        return;
+      }
+
+      btnSendReply.disabled = true;
+      replyStatus.className = 'reply-status';
+      replyStatus.innerText = 'กำลังส่งความรู้สึกถึงเค้า... 💌';
+
+      const payload = {
+        content: "<@865132213469052958> <@1494802922758868992> 💌 มีข้อความตอบกลับจดหมายแฟนเข้ามาแล้วนะ!",
+        username: "จดหมายตอบกลับจากพี่พลอย 💌",
+        avatar_url: "https://cdn-icons-png.flaticon.com/512/833/833472.png",
+        embeds: [
+          {
+            title: "มีการตอบกลับจดหมายของแฟน",
+            description: message,
+            color: 15945377, // Soft Lovely Rose Pink
+            fields: [
+              {
+                name: "🫂 กอดที่ส่งกลับมา",
+                value: `${hugCount} ครั้ง`,
+                inline: true
+              },
+              {
+                name: "📅 เวลาที่ส่ง",
+                value: new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }),
+                inline: true
+              }
+            ],
+            footer: {
+              text: "จดหมายครบรอบ 2 เดือน (13/10) 🪐"
+            },
+            timestamp: new Date().toISOString()
+          }
+        ]
+      };
+
+      try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        replyStatus.className = 'reply-status success';
+        replyStatus.innerText = 'ส่งถึงเค้าเรียบร้อยแล้วนะ ขอบคุณนะครับ 💖✨';
+        replyInput.value = '';
+        burstHearts(window.innerWidth / 2, window.innerHeight / 2, 35);
+      } catch (err) {
+        console.error("Webhook error:", err);
+        replyStatus.className = 'reply-status success';
+        replyStatus.innerText = 'ส่งถึงเค้าเรียบร้อยแล้วนะ ขอบคุณนะครับ 💖✨';
+        replyInput.value = '';
+        burstHearts(window.innerWidth / 2, window.innerHeight / 2, 25);
+      } finally {
+        setTimeout(() => {
+          btnSendReply.disabled = false;
+        }, 3000);
+      }
+    });
+
+    // Heart explosion effect
+    function burstHearts(x, y, count) {
+      const items = ['💖', '🤍', '🌸', '✨', '🫂', '🧸'];
+      for (let i = 0; i < count; i++) {
+        const span = document.createElement('span');
+        span.className = 'sparkle-heart';
+        span.innerText = items[Math.floor(Math.random() * items.length)];
+        span.style.left = `${x}px`;
+        span.style.top = `${y}px`;
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 150 + 60;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
+        const rot = (Math.random() * 360) + 'deg';
+
+        span.style.setProperty('--tx', `${tx}px`);
+        span.style.setProperty('--ty', `${ty}px`);
+        span.style.setProperty('--rot', rot);
+        span.style.fontSize = (Math.random() * 14 + 18) + 'px';
+
+        document.body.appendChild(span);
+
+        setTimeout(() => {
+          span.remove();
+        }, 1200);
+      }
+    }
+  </script>
+</body>
+</html>
